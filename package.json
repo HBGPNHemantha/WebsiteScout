@@ -1,0 +1,18 @@
+{
+  "name": "websitescout-monorepo",
+  "version": "1.0.0",
+  "description": "WebsiteScout — Find Businesses Without Websites (MERN + Google Maps)",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm run dev --prefix backend",
+    "client": "npm run dev --prefix frontend",
+    "install-all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "build": "npm run build --prefix frontend"
+  },
+  "keywords": ["mern", "google-maps", "places-api", "leads", "sales-pipeline", "websites"],
+  "author": "WebsiteScout",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
