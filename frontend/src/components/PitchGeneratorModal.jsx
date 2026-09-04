@@ -44,72 +44,72 @@ export default function PitchGeneratorModal() {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      <div className="w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors">
         
         {/* Header */}
-        <div className="p-5 bg-gradient-to-r from-slate-900 via-indigo-950/50 to-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-5 bg-gradient-to-r from-slate-50 via-indigo-50/50 to-slate-50 dark:from-slate-900 dark:via-indigo-950/50 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shadow-inner">
-              <Sparkles className="w-5 h-5 text-yellow-300" />
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center shadow-inner">
+              <Sparkles className="w-5 h-5 text-amber-500 dark:text-yellow-300" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-slate-100 flex items-center gap-2">
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <span>Sales Pitch Generator</span>
               </h2>
-              <p className="text-xs text-slate-400">
-                Tailored outreach for <strong className="text-indigo-300">{pitchModalLead.name}</strong> ({pitchModalLead.category})
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Tailored outreach for <strong className="text-indigo-600 dark:text-indigo-300">{pitchModalLead.name}</strong> ({pitchModalLead.category})
               </p>
             </div>
           </div>
 
           <button
             onClick={() => setPitchModalLead(null)}
-            className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition"
+            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Agency Config Bar */}
-        <div className="px-5 py-3 bg-slate-950/70 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="flex items-center space-x-3">
             <div>
-              <label className="text-[10px] text-slate-500 uppercase font-bold block">Your Name</label>
+              <label className="text-[10px] text-slate-500 dark:text-slate-500 uppercase font-bold block">Your Name</label>
               <input
                 type="text"
                 value={senderName}
                 onChange={(e) => setSenderName(e.target.value)}
-                className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
+                className="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
               />
             </div>
 
             <div>
-              <label className="text-[10px] text-slate-500 uppercase font-bold block">Agency / Business</label>
+              <label className="text-[10px] text-slate-500 dark:text-slate-500 uppercase font-bold block">Agency / Business</label>
               <input
                 type="text"
                 value={agencyName}
                 onChange={(e) => setAgencyName(e.target.value)}
-                className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
+                className="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
               />
             </div>
           </div>
 
           <div className="text-right">
-            <span className="text-[10px] text-slate-400">Lead Target:</span>
-            <p className="font-semibold text-slate-300">{pitchModalLead.phone || 'No phone listed'}</p>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400">Lead Target:</span>
+            <p className="font-semibold text-slate-800 dark:text-slate-300">{pitchModalLead.phone || 'No phone listed'}</p>
           </div>
         </div>
 
         {/* Pitch Format Tabs */}
-        <div className="px-5 pt-4 flex space-x-2 border-b border-slate-800 overflow-x-auto">
+        <div className="px-5 pt-4 flex space-x-2 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
           
           <button
             onClick={() => setActivePitchType('whatsapp')}
             className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-t-xl border-b-2 transition ${
               activePitchType === 'whatsapp'
-                ? 'border-emerald-500 text-emerald-400 bg-emerald-500/10'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-emerald-500 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
@@ -120,8 +120,8 @@ export default function PitchGeneratorModal() {
             onClick={() => setActivePitchType('cold_call')}
             className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-t-xl border-b-2 transition ${
               activePitchType === 'cold_call'
-                ? 'border-blue-500 text-blue-400 bg-blue-500/10'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-blue-500 text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <Phone className="w-3.5 h-3.5" />
@@ -132,8 +132,8 @@ export default function PitchGeneratorModal() {
             onClick={() => setActivePitchType('cold_email')}
             className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-t-xl border-b-2 transition ${
               activePitchType === 'cold_email'
-                ? 'border-indigo-500 text-indigo-400 bg-indigo-500/10'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-indigo-500 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <Mail className="w-3.5 h-3.5" />
@@ -144,8 +144,8 @@ export default function PitchGeneratorModal() {
             onClick={() => setActivePitchType('sms')}
             className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-t-xl border-b-2 transition ${
               activePitchType === 'sms'
-                ? 'border-amber-500 text-amber-400 bg-amber-500/10'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-amber-500 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <Send className="w-3.5 h-3.5" />
@@ -159,9 +159,9 @@ export default function PitchGeneratorModal() {
           
           {/* Cold Email Subject Line Preview */}
           {activePitchType === 'cold_email' && currentTemplate.subject && (
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
               <span className="text-[10px] text-slate-500 uppercase font-bold block mb-1">Subject Line:</span>
-              <p className="text-xs text-slate-200 font-semibold">{currentTemplate.subject}</p>
+              <p className="text-xs text-slate-900 dark:text-slate-200 font-semibold">{currentTemplate.subject}</p>
             </div>
           )}
 
@@ -171,21 +171,21 @@ export default function PitchGeneratorModal() {
               readOnly
               value={currentTemplate.text}
               rows={9}
-              className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono leading-relaxed resize-none focus:outline-none shadow-inner"
+              className="w-full p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-200 font-mono leading-relaxed resize-none focus:outline-none shadow-inner"
             />
             
             <button
               onClick={() => handleCopy(currentTemplate.text)}
-              className="absolute top-3 right-3 flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 shadow-md transition"
+              className="absolute top-3 right-3 flex items-center space-x-1.5 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copied!</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5 text-indigo-400" />
+                  <Copy className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                   <span>Copy Script</span>
                 </>
               )}
@@ -195,7 +195,7 @@ export default function PitchGeneratorModal() {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
           
           <div className="flex items-center space-x-2">
             <button
@@ -203,7 +203,7 @@ export default function PitchGeneratorModal() {
                 changeLeadStatus(pitchModalLead._id || pitchModalLead.placeId, 'contacted');
                 showToast('Marked as Contacted!', 'success');
               }}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition"
+              className="px-3 py-1.5 bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition shadow-sm"
             >
               Mark Lead as "Contacted"
             </button>
@@ -228,7 +228,7 @@ export default function PitchGeneratorModal() {
 
             <button
               onClick={() => setPitchModalLead(null)}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition"
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 text-xs font-semibold rounded-xl transition"
             >
               Done
             </button>

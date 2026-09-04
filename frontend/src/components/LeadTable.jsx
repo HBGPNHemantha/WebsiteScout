@@ -30,16 +30,16 @@ export default function LeadTable() {
     filteredLeads.length > 0 && selectedLeadIds.size === filteredLeads.length;
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/80 backdrop-blur-md">
-      <table className="w-full text-left text-xs text-slate-300">
-        <thead className="bg-slate-950/80 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800 text-[10px]">
+    <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/80 backdrop-blur-md shadow-sm transition-colors">
+      <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+        <thead className="bg-slate-50 dark:bg-slate-950/80 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800 text-[10px]">
           <tr>
             <th className="p-3.5 w-10 text-center">
               <input
                 type="checkbox"
                 checked={allSelected}
                 onChange={() => selectAllFilteredLeads(filteredLeads)}
-                className="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-indigo-500/20 w-3.5 h-3.5 cursor-pointer"
+                className="rounded bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500/20 w-3.5 h-3.5 cursor-pointer"
               />
             </th>
             <th className="p-3.5">Business Name</th>
@@ -52,7 +52,7 @@ export default function LeadTable() {
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-slate-800/60">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
           {filteredLeads.map((b) => {
             const leadId = b._id || b.placeId;
             const isSelected = selectedLeadIds.has(leadId);
@@ -65,8 +65,8 @@ export default function LeadTable() {
                 key={leadId}
                 onMouseEnter={() => setHoveredLeadId(leadId)}
                 onMouseLeave={() => setHoveredLeadId(null)}
-                className={`hover:bg-slate-800/40 transition ${
-                  isSelected ? 'bg-indigo-950/20' : ''
+                className={`hover:bg-slate-50 dark:hover:bg-slate-800/40 transition ${
+                  isSelected ? 'bg-indigo-50/70 dark:bg-indigo-950/20' : ''
                 }`}
               >
                 {/* Checkbox */}
@@ -75,26 +75,26 @@ export default function LeadTable() {
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => toggleSelectLead(leadId)}
-                    className="rounded bg-slate-950 border-slate-700 text-indigo-600 focus:ring-indigo-500/20 w-3.5 h-3.5 cursor-pointer"
+                    className="rounded bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500/20 w-3.5 h-3.5 cursor-pointer"
                   />
                 </td>
 
                 {/* Name & Address */}
-                <td className="p-3.5 font-medium text-slate-100 max-w-[220px]">
+                <td className="p-3.5 font-medium text-slate-900 dark:text-slate-100 max-w-[220px]">
                   <div
                     onClick={() => setDetailsModalLead(b)}
-                    className="font-bold hover:text-indigo-400 cursor-pointer truncate"
+                    className="font-bold hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer truncate"
                   >
                     {b.name}
                   </div>
-                  <div className="text-[11px] text-slate-400 truncate max-w-[200px]">
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[200px]">
                     {b.address || b.searchArea}
                   </div>
                 </td>
 
                 {/* Category */}
                 <td className="p-3.5">
-                  <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 capitalize text-[11px] border border-slate-700">
+                  <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 capitalize text-[11px] border border-slate-200 dark:border-slate-700">
                     {b.category}
                   </span>
                 </td>
@@ -106,14 +106,14 @@ export default function LeadTable() {
                       href={b.websiteUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center space-x-1 text-[11px] text-slate-400 hover:text-slate-200"
+                      className="inline-flex items-center space-x-1 text-[11px] text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
                     >
-                      <Globe className="w-3 h-3 text-slate-500" />
+                      <Globe className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                       <span className="truncate max-w-[100px]">Has Site</span>
                       <ExternalLink className="w-2.5 h-2.5" />
                     </a>
                   ) : (
-                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-extrabold animate-pulse">
+                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-rose-50 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30 text-[10px] font-extrabold animate-pulse">
                       <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                       <span>NO WEBSITE</span>
                     </span>
@@ -123,13 +123,13 @@ export default function LeadTable() {
                 {/* Rating */}
                 <td className="p-3.5">
                   {b.rating > 0 ? (
-                    <div className="flex items-center space-x-1 text-amber-400 font-semibold">
-                      <Star className="w-3 h-3 fill-amber-400" />
+                    <div className="flex items-center space-x-1 text-amber-500 dark:text-amber-400 font-semibold">
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
                       <span>{b.rating.toFixed(1)}</span>
-                      <span className="text-slate-500 font-normal">({b.totalRatings || 0})</span>
+                      <span className="text-slate-400 dark:text-slate-500 font-normal">({b.totalRatings || 0})</span>
                     </div>
                   ) : (
-                    <span className="text-slate-500 text-[11px]">N/A</span>
+                    <span className="text-slate-400 dark:text-slate-500 text-[11px]">N/A</span>
                   )}
                 </td>
 
@@ -142,10 +142,10 @@ export default function LeadTable() {
                         onClick={() => {
                           if (b.status === 'not_contacted') changeLeadStatus(leadId, 'contacted');
                         }}
-                        className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 transition"
+                        className="p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded border border-slate-200 dark:border-slate-700 transition"
                         title={`Call ${b.phone}`}
                       >
-                        <Phone className="w-3.5 h-3.5 text-blue-400" />
+                        <Phone className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                       </a>
                     )}
 
@@ -157,19 +157,19 @@ export default function LeadTable() {
                         onClick={() => {
                           if (b.status === 'not_contacted') changeLeadStatus(leadId, 'contacted');
                         }}
-                        className="p-1.5 bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 rounded border border-emerald-800/60 transition"
+                        className="p-1.5 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 rounded border border-emerald-200 dark:border-emerald-800/60 transition"
                         title="WhatsApp Chat"
                       >
-                        <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                        <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                       </a>
                     )}
 
                     <button
                       onClick={() => setPitchModalLead(b)}
-                      className="p-1.5 bg-indigo-950/60 hover:bg-indigo-900/60 text-indigo-300 rounded border border-indigo-800/60 transition"
+                      className="p-1.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 rounded border border-indigo-200 dark:border-indigo-800/60 transition"
                       title="Pitch Generator"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-yellow-400" />
                     </button>
                   </div>
                 </td>
@@ -179,10 +179,10 @@ export default function LeadTable() {
                   <select
                     value={b.status}
                     onChange={(e) => changeLeadStatus(leadId, e.target.value)}
-                    className={`text-xs font-semibold py-1 px-2 rounded-lg border bg-slate-950 focus:outline-none ${statusConfig.bgLight}`}
+                    className={`text-xs font-semibold py-1 px-2 rounded-lg border bg-white dark:bg-slate-950 focus:outline-none ${statusConfig.bgLight}`}
                   >
                     {Object.values(PIPELINE_STATUSES).map((st) => (
-                      <option key={st.key} value={st.key} className="bg-slate-900 text-slate-200">
+                      <option key={st.key} value={st.key} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
                         {st.label}
                       </option>
                     ))}
@@ -194,14 +194,14 @@ export default function LeadTable() {
                   <div className="flex items-center justify-end space-x-1">
                     <button
                       onClick={() => setSelectedLeadId(leadId)}
-                      className="p-1.5 text-slate-400 hover:text-indigo-300 hover:bg-slate-800 rounded transition"
+                      className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
                       title="View on Map"
                     >
                       <Navigation className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => setDetailsModalLead(b)}
-                      className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition"
+                      className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
                       title="Lead Details & History"
                     >
                       <FileText className="w-3.5 h-3.5" />

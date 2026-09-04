@@ -52,26 +52,26 @@ export default function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         
         {/* Header */}
-        <div className="p-5 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-5 bg-gradient-to-r from-slate-100 via-indigo-50/50 to-slate-100 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center">
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-slate-100">
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">
                 {authMode === 'login' ? 'Agency Login' : 'Create Agency Account'}
               </h2>
-              <p className="text-xs text-slate-400">Save and manage your client leads</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Save and manage your client leads</p>
             </div>
           </div>
 
           <button
             onClick={closeAuthModal}
-            className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition"
+            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -81,7 +81,7 @@ export default function AuthModal() {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           
           {error && (
-            <div className="p-3 rounded-lg bg-rose-950/50 border border-rose-800/60 text-rose-300 text-xs">
+            <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 text-rose-700 dark:text-rose-300 text-xs">
               {error}
             </div>
           )}
@@ -89,34 +89,34 @@ export default function AuthModal() {
           {authMode === 'register' && (
             <>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">
                   Your Full Name
                 </label>
                 <div className="relative flex items-center">
-                  <User className="absolute left-3 w-4 h-4 text-slate-500" />
+                  <User className="absolute left-3 w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Alex Morgan"
                     required
-                    className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                    className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">
                   Agency / Business Name
                 </label>
                 <div className="relative flex items-center">
-                  <Building className="absolute left-3 w-4 h-4 text-slate-500" />
+                  <Building className="absolute left-3 w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="text"
                     value={agencyName}
                     onChange={(e) => setAgencyName(e.target.value)}
                     placeholder="Apex Digital Agency"
-                    className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                    className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -124,28 +124,28 @@ export default function AuthModal() {
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">
               Email Address
             </label>
             <div className="relative flex items-center">
-              <Mail className="absolute left-3 w-4 h-4 text-slate-500" />
+              <Mail className="absolute left-3 w-4 h-4 text-slate-400 dark:text-slate-500" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@agency.com"
                 required
-                className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">
               Password
             </label>
             <div className="relative flex items-center">
-              <Lock className="absolute left-3 w-4 h-4 text-slate-500" />
+              <Lock className="absolute left-3 w-4 h-4 text-slate-400 dark:text-slate-500" />
               <input
                 type="password"
                 value={password}
@@ -153,7 +153,7 @@ export default function AuthModal() {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
               />
             </div>
           </div>
@@ -179,23 +179,23 @@ export default function AuthModal() {
           {/* Toggle between login and register */}
           <div className="pt-2 text-center">
             {authMode === 'login' ? (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Don't have an account?{' '}
                 <button
                   type="button"
                   onClick={() => setAuthMode('register')}
-                  className="text-indigo-400 hover:text-indigo-300 font-semibold underline"
+                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold underline"
                 >
                   Create one
                 </button>
               </p>
             ) : (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Already registered?{' '}
                 <button
                   type="button"
                   onClick={() => setAuthMode('login')}
-                  className="text-indigo-400 hover:text-indigo-300 font-semibold underline"
+                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold underline"
                 >
                   Sign in
                 </button>
@@ -204,13 +204,13 @@ export default function AuthModal() {
           </div>
 
           {/* Instant Guest Demo Trigger */}
-          <div className="pt-3 border-t border-slate-800 text-center">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-center">
             <button
               type="button"
               onClick={handleDemoGuest}
-              className="text-xs text-slate-400 hover:text-slate-200 flex items-center justify-center space-x-1.5 mx-auto"
+              className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center space-x-1.5 mx-auto"
             >
-              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-yellow-400" />
               <span>Or launch instant 1-click Demo session</span>
             </button>
           </div>

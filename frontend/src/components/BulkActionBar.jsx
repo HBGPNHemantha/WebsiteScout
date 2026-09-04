@@ -70,14 +70,14 @@ export default function BulkActionBar() {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-bounce-subtle">
-      <div className="flex flex-wrap items-center space-x-2 sm:space-x-3 bg-slate-900/95 border border-indigo-500/40 text-slate-100 px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+      <div className="flex flex-wrap items-center space-x-2 sm:space-x-3 bg-white/95 dark:bg-slate-900/95 border border-indigo-500/40 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-xl ring-1 ring-black/5 dark:ring-white/10 transition-colors">
         
         {/* Count Badge */}
-        <div className="flex items-center space-x-2 pr-3 border-r border-slate-700">
+        <div className="flex items-center space-x-2 pr-3 border-r border-slate-200 dark:border-slate-700">
           <span className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-extrabold text-white">
             {selectedCount}
           </span>
-          <span className="text-xs font-semibold text-slate-200 hidden sm:inline">
+          <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 hidden sm:inline">
             selected
           </span>
         </div>
@@ -97,14 +97,14 @@ export default function BulkActionBar() {
           <button
             type="button"
             onClick={() => setShowStatusOptions(!showStatusOptions)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition"
+            className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition"
           >
             <span>Change Status</span>
             <ChevronDown className="w-3.5 h-3.5" />
           </button>
 
           {showStatusOptions && (
-            <div className="absolute bottom-full left-0 mb-2 w-44 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-1 space-y-1">
+            <div className="absolute bottom-full left-0 mb-2 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl p-1 space-y-1">
               {Object.values(PIPELINE_STATUSES).map((st) => (
                 <button
                   key={st.key}
@@ -113,7 +113,7 @@ export default function BulkActionBar() {
                     handleBulkStatusChange(st.key);
                     setShowStatusOptions(false);
                   }}
-                  className="w-full text-left px-2.5 py-1.5 text-xs text-slate-300 hover:bg-slate-800 rounded-lg flex items-center space-x-2 transition"
+                  className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center space-x-2 transition"
                 >
                   <span className={`w-2 h-2 rounded-full ${st.dotBg}`} />
                   <span>{st.label}</span>
@@ -127,10 +127,10 @@ export default function BulkActionBar() {
         <button
           type="button"
           onClick={handleExportSelected}
-          className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition"
+          className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition"
           title="Export selected leads"
         >
-          <Download className="w-3.5 h-3.5 text-indigo-400" />
+          <Download className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
           <span className="hidden md:inline">Export</span>
         </button>
 
@@ -138,7 +138,7 @@ export default function BulkActionBar() {
         <button
           type="button"
           onClick={handleBulkDelete}
-          className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-xl transition"
+          className="p-2 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
           title="Delete selected leads"
         >
           <Trash2 className="w-4 h-4" />
@@ -148,7 +148,7 @@ export default function BulkActionBar() {
         <button
           type="button"
           onClick={() => selectAllFilteredLeads([])}
-          className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition"
+          className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
           title="Deselect all"
         >
           <X className="w-4 h-4" />

@@ -19,7 +19,7 @@ export default function App() {
   const { activeTab, viewMode, toast, searchMeta } = useLeads();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
       
       {/* Navigation Header */}
       <Navbar />
@@ -30,18 +30,18 @@ export default function App() {
           <div
             className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl shadow-2xl border text-xs font-semibold backdrop-blur-md ${
               toast.type === 'error'
-                ? 'bg-rose-950/90 text-rose-200 border-rose-800/80 shadow-rose-950/40'
+                ? 'bg-rose-100/90 text-rose-800 border-rose-300 dark:bg-rose-950/90 dark:text-rose-200 dark:border-rose-800/80 shadow-rose-950/20'
                 : toast.type === 'info'
-                ? 'bg-slate-900/90 text-slate-200 border-slate-700 shadow-slate-950/40'
-                : 'bg-emerald-950/90 text-emerald-200 border-emerald-800/80 shadow-emerald-950/40'
+                ? 'bg-slate-100/90 text-slate-800 border-slate-300 dark:bg-slate-900/90 dark:text-slate-200 dark:border-slate-700 shadow-slate-950/20'
+                : 'bg-emerald-100/90 text-emerald-800 border-emerald-300 dark:bg-emerald-950/90 dark:text-emerald-200 dark:border-emerald-800/80 shadow-emerald-950/20'
             }`}
           >
             {toast.type === 'error' ? (
-              <AlertCircle className="w-4 h-4 text-rose-400" />
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
             ) : toast.type === 'info' ? (
-              <Info className="w-4 h-4 text-blue-400" />
+              <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             )}
             <span>{toast.message}</span>
           </div>
@@ -114,8 +114,8 @@ export default function App() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-extrabold text-slate-100">Saved Lead Database</h1>
-                <p className="text-xs text-slate-400">All local businesses scouted and tracked across sessions</p>
+                <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Saved Lead Database</h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400">All local businesses scouted and tracked across sessions</p>
               </div>
             </div>
             <ViewToggle />
@@ -134,7 +134,7 @@ export default function App() {
       <AuthModal />
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950 py-6 text-center text-xs text-slate-500 dark:text-slate-500 transition-colors">
         <p>WebsiteScout — Google Places Lead Generation Engine & Pipeline CRM</p>
       </footer>
 

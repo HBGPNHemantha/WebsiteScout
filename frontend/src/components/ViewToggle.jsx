@@ -55,24 +55,24 @@ export default function ViewToggle() {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-900/80 border border-slate-800 rounded-xl">
+    <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-white/90 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 rounded-xl shadow-sm transition-colors">
       
       {/* Left: Quick Stats Pills */}
       <div className="flex items-center space-x-2 text-xs">
-        <div className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-semibold">
-          <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+        <div className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20 font-semibold">
+          <AlertCircle className="w-3.5 h-3.5 text-rose-500 dark:text-rose-400" />
           <span>{noWebsiteLeads} Without Website</span>
         </div>
 
-        <div className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-semibold">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/20 font-semibold">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>{convertedLeads} Converted</span>
         </div>
 
-        <span className="text-slate-500 hidden sm:inline">•</span>
+        <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">•</span>
 
-        <span className="text-slate-400 text-xs hidden sm:inline">
-          Showing <strong className="text-slate-200">{filteredLeads.length}</strong> of{' '}
+        <span className="text-slate-500 dark:text-slate-400 text-xs hidden sm:inline">
+          Showing <strong className="text-slate-800 dark:text-slate-200">{filteredLeads.length}</strong> of{' '}
           {leads.length} results
         </span>
       </div>
@@ -81,14 +81,14 @@ export default function ViewToggle() {
       <div className="flex items-center space-x-2">
         
         {/* View Segmented Switch */}
-        <div className="flex items-center p-0.5 bg-slate-950 rounded-lg border border-slate-800">
+        <div className="flex items-center p-0.5 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
           
           <button
             onClick={() => setViewMode('split')}
             className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition ${
               viewMode === 'split'
                 ? 'bg-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
             title="Split View (Map + List)"
           >
@@ -101,7 +101,7 @@ export default function ViewToggle() {
             className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition ${
               viewMode === 'list'
                 ? 'bg-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
             title="List Cards View"
           >
@@ -114,7 +114,7 @@ export default function ViewToggle() {
             className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition ${
               viewMode === 'table'
                 ? 'bg-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
             title="Table Spreadsheet View"
           >
@@ -127,7 +127,7 @@ export default function ViewToggle() {
             className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition ${
               viewMode === 'map'
                 ? 'bg-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
             title="Full Map View"
           >
@@ -140,10 +140,10 @@ export default function ViewToggle() {
         {/* Export CSV Button */}
         <button
           onClick={handleExport}
-          className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition"
+          className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 transition"
           title="Export current filtered leads to CSV"
         >
-          <Download className="w-3.5 h-3.5 text-indigo-400" />
+          <Download className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
           <span className="hidden md:inline">Export CSV</span>
         </button>
 
