@@ -77,10 +77,11 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Database & Server
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`
+// Start Database & Server (only in local dev — Vercel handles this in production)
+if (!process.env.VERCEL) {
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`
 🚀 ===================================================
    WebsiteScout Backend API Server is Running!
    ---------------------------------------------------
@@ -90,8 +91,15 @@ connectDB().then(() => {
    📋 Businesses:    GET  http://localhost:${PORT}/api/businesses
    📊 Analytics:     GET  http://localhost:${PORT}/api/analytics/dashboard
 ===================================================
-    `);
+      `);
+    });
+  }).catch(err => {
+    console.error('Failed to start server:', err);
   });
-}).catch(err => {
-  console.error('Failed to start server:', err);
-});
+} else {
+  // On Vercel: just connect DB, no app.listen needed
+  connectDB().catch(err => console.error('DB connection failed:', err));
+}
+
+// Export app for Vercel serverless runtime
+module.exports = app;
