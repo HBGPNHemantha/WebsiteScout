@@ -1,0 +1,129 @@
+To deploy your WebsiteScout (MERN Stack) project for 100% free with a free domain & SSL (HTTPS), here is the complete step-by-step guide.
+
+🌐 Overview of Free Hosting & Domain Stack
+Because WebsiteScout is a full-stack application (React frontend + Express backend + MongoDB database), the most reliable, modern, and free approach is:
+
+Component	Free Platform	Free Domain Provided
+Frontend	Vercel or Netlify	https://your-project.vercel.app (Free SSL)
+Backend API	Render or Koyeb	https://your-backend.onrender.com (Free SSL)
+Database	MongoDB Atlas	Cloud M0 cluster (512 MB Free Forever)
+Custom Free Domain (Optional)	is-a.dev / FreeDNS / GitHub Student Pack	e.g. yourname.is-a.dev or free .me / .tech
+🛠️ Step 1: Prepare the Code for Production
+Before uploading, make small adjustments so your frontend knows how to talk to your live backend domain in production, and your backend accepts requests from your live frontend.
+
+1. Update Frontend API Base URL
+In 
+
+frontend/src/services/api.js
+:
+
+javascript
+import axios from 'axios';
+// Use environment variable in production or fallback to /api proxy in local dev
+const baseURL = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api` 
+  : '/api';
+const api = axios.create({
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 25000,
+});
+2. Update Backend CORS
+In 
+
+backend/server.js
+:
+
+javascript
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+  process.env.FRONTEND_URL, // e.g. https://websitescout.vercel.app
+].filter(Boolean);
+app.use(
+  cors({
+    origin: process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL 
+      ? true 
+      : allowedOrigins,
+    credentials: true,
+  })
+);
+3. Add Vercel SPA Routing Configuration
+Create a vercel.json file inside frontend/vercel.json so page refreshes don't return 404s:
+
+json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+🗄️ Step 2: Set Up Free MongoDB Atlas Database
+Go to MongoDB Atlas and create a free account.
+Click Create Deployment → Select M0 (Free) tier.
+Under Security Quickstart:
+Create a database user (e.g. admin and password).
+In Network Access / IP Access List, choose Allow Access from Anywhere (0.0.0.0/0) so Render can connect.
+Click Connect → Drivers (Node.js) and copy your connection string:
+text
+mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/websitescout?retryWrites=true&w=majority
+🚀 Step 3: Deploy Backend on Render (Free)
+Push your project to a GitHub repository (if not done already).
+Sign in to Render.com with GitHub.
+Click New + → Web Service.
+Connect your GitHub repository and set:
+Name: websitescout-api
+Root Directory: backend
+Environment: Node
+Build Command: npm install
+Start Command: npm start
+Instance Type: Free
+Under Environment Variables, add:
+NODE_ENV = production
+MONGODB_URI = (Your MongoDB Atlas connection string from Step 2)
+JWT_SECRET = (Any random string, e.g. supersecretjwtkey123)
+GOOGLE_PLACES_API_KEY = (Your Google Places API Key if you have one)
+Click Deploy Web Service.
+Once deployed, Render will provide a free HTTPS URL:
+📌 Backend URL: https://websitescout-api.onrender.com
+
+⚡ Step 4: Deploy Frontend on Vercel (Free)
+Sign in to Vercel.com with GitHub.
+Click Add New... → Project and select your repository.
+In the project configuration:
+Framework Preset: Vite
+Root Directory: Click Edit and select frontend
+Build Command: npm run build
+Output Directory: dist
+Under Environment Variables, add:
+VITE_API_URL = https://websitescout-api.onrender.com (Your Render backend URL from Step 3)
+Click Deploy.
+Vercel will build and assign your free live domain:
+📌 Live Website: https://websitescout.vercel.app
+
+(Optional: Go back to Render backend settings and add FRONTEND_URL = https://websitescout.vercel.app to your environment variables).
+
+🏷️ Step 5: How to Get a Free Custom Domain (Optional)
+If you want a custom domain instead of .vercel.app:
+
+Option A: is-a.dev (Best for Developers / Portfolio Projects)
+What is it: Free yourname.is-a.dev domain for developers.
+How to get: Submit a PR to is-a-dev/register with your CNAME pointing to cname.vercel-dns.com.
+Option B: FreeDNS (Afraid.org) or DuckDNS
+Go to FreeDNS.afraid.org or DuckDNS.org.
+Pick a free subdomain (e.g. websitescout.mooo.com or websitescout.duckdns.org).
+Point the CNAME or A record to Vercel/Render.
+Option C: GitHub Student Developer Pack
+If you are a student, you get free domains for 1 year (like .me, .tech, .live) from Namecheap / Name.com via the GitHub Student Pack.
+Option D: Connect Custom Domain to Vercel
+In Vercel Project → Settings → Domains.
+Type your domain (e.g. websitescout.is-a.dev or yourdomain.com).
+Vercel will automatically provision a free SSL certificate (HTTPS).
+Summary Checklist
+ MongoDB Atlas M0 cluster created
+ Backend deployed on Render (https://...onrender.com)
+ Frontend deployed on Vercel with VITE_API_URL configured (https://...vercel.app)
+ Both Frontend and Backend communicate securely over HTTPS with zero hosting cost.

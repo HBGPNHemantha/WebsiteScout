@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "WebsiteScout — Find Businesses Without Websites (MERN + Google Maps)",
   "scripts": {
+    "start": "node backend/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run dev --prefix backend",
     "client": "npm run dev --prefix frontend",

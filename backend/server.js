@@ -9,10 +9,26 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS for frontend dev servers
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+  process.env.FRONTEND_URL, // e.g. https://websitescout.vercel.app
+].filter(Boolean);
+
+// Enable CORS
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000'],
+    origin: process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL
+      ? true
+      : (origin, callback) => {
+          if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+            callback(null, true);
+          } else {
+            callback(null, true); // Allow requests or configure specific origins
+          }
+        },
     credentials: true,
   })
 );
@@ -37,6 +53,19 @@ app.get('/api/health', (req, res) => {
     env: process.env.NODE_ENV || 'development'
   });
 });
+
+const path = require('path');
+const fs = require('fs');
+
+// Static file serving for single-server production deployments
+const frontendDist = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

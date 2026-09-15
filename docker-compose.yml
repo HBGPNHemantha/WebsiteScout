@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: websitescout-app
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/websitescout
+      - JWT_SECRET=websitescout_production_super_secret_key_2026
+      - USE_MOCK_FALLBACK=true
+      - GOOGLE_MAPS_SERVER_API_KEY=
+      - GOOGLE_MAPS_BROWSER_API_KEY=
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7-jammy
+    container_name: websitescout-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

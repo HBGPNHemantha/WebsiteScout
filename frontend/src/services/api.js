@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Use environment variable in production or fallback to /api proxy in local dev
+const baseURL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -51,3 +56,4 @@ export const registerUser = (userData) => api.post('/auth/register', userData);
 export const getMe = () => api.get('/auth/me');
 
 export default api;
+
