@@ -1,3 +1,7 @@
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -23,12 +27,12 @@ app.use(
     origin: process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL
       ? true
       : (origin, callback) => {
-          if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
-            callback(null, true);
-          } else {
-            callback(null, true); // Allow requests or configure specific origins
-          }
-        },
+        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+          callback(null, true);
+        } else {
+          callback(null, true); // Allow requests or configure specific origins
+        }
+      },
     credentials: true,
   })
 );
