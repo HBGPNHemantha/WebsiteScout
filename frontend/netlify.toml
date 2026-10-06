@@ -1,6 +1,7 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+  base="frontend"
+  command = "npm vite build"
+  publish = "frontend/dist"
 
 # Proxy /api requests to your Render backend
 # ⚠️ Replace the URL below with your actual Render backend URL after deploying
