@@ -4,56 +4,56 @@ const Business = require('../models/Business');
 // Known city centroids for mock simulation fallback
 const CITY_CENTROIDS = {
   kurunegala: { lat: 7.4863, lng: 80.3623, country: 'LK', phonePrefix: '+94 37' },
-  colombo:    { lat: 6.9271, lng: 79.8612, country: 'LK', phonePrefix: '+94 11' },
-  kandy:      { lat: 7.2906, lng: 80.6337, country: 'LK', phonePrefix: '+94 81' },
-  galle:      { lat: 6.0535, lng: 80.2210, country: 'LK', phonePrefix: '+94 91' },
-  london:     { lat: 51.5074, lng: -0.1278, country: 'GB', phonePrefix: '+44 20' },
+  colombo: { lat: 6.9271, lng: 79.8612, country: 'LK', phonePrefix: '+94 11' },
+  kandy: { lat: 7.2906, lng: 80.6337, country: 'LK', phonePrefix: '+94 81' },
+  galle: { lat: 6.0535, lng: 80.2210, country: 'LK', phonePrefix: '+94 91' },
+  london: { lat: 51.5074, lng: -0.1278, country: 'GB', phonePrefix: '+44 20' },
   'new york': { lat: 40.7128, lng: -74.0060, country: 'US', phonePrefix: '+1 212' },
-  austin:     { lat: 30.2672, lng: -97.7431, country: 'US', phonePrefix: '+1 512' },
-  sydney:     { lat: -33.8688, lng: 151.2093, country: 'AU', phonePrefix: '+61 2' },
-  toronto:    { lat: 43.6532, lng: -79.3832, country: 'CA', phonePrefix: '+1 416' },
-  dubai:      { lat: 25.2048, lng: 55.2708, country: 'AE', phonePrefix: '+971 4' },
-  singapore:  { lat: 1.3521, lng: 103.8198, country: 'SG', phonePrefix: '+65 6' },
-  berlin:     { lat: 52.5200, lng: 13.4050, country: 'DE', phonePrefix: '+49 30' },
-  paris:      { lat: 48.8566, lng: 2.3522, country: 'FR', phonePrefix: '+33 1' },
-  tokyo:      { lat: 35.6762, lng: 139.6503, country: 'JP', phonePrefix: '+81 3' },
-  bangalore:  { lat: 12.9716, lng: 77.5946, country: 'IN', phonePrefix: '+91 80' },
-  mumbai:     { lat: 19.0760, lng: 72.8777, country: 'IN', phonePrefix: '+91 22' },
+  austin: { lat: 30.2672, lng: -97.7431, country: 'US', phonePrefix: '+1 512' },
+  sydney: { lat: -33.8688, lng: 151.2093, country: 'AU', phonePrefix: '+61 2' },
+  toronto: { lat: 43.6532, lng: -79.3832, country: 'CA', phonePrefix: '+1 416' },
+  dubai: { lat: 25.2048, lng: 55.2708, country: 'AE', phonePrefix: '+971 4' },
+  singapore: { lat: 1.3521, lng: 103.8198, country: 'SG', phonePrefix: '+65 6' },
+  berlin: { lat: 52.5200, lng: 13.4050, country: 'DE', phonePrefix: '+49 30' },
+  paris: { lat: 48.8566, lng: 2.3522, country: 'FR', phonePrefix: '+33 1' },
+  tokyo: { lat: 35.6762, lng: 139.6503, country: 'JP', phonePrefix: '+81 3' },
+  bangalore: { lat: 12.9716, lng: 77.5946, country: 'IN', phonePrefix: '+91 80' },
+  mumbai: { lat: 19.0760, lng: 72.8777, country: 'IN', phonePrefix: '+91 22' },
 };
 
 // Map common category names to OSM amenity/shop/leisure/craft tags
 const CATEGORY_TO_OSM = {
-  restaurant:    [{ k: 'amenity', v: 'restaurant' }, { k: 'amenity', v: 'fast_food' }],
-  restaurants:   [{ k: 'amenity', v: 'restaurant' }, { k: 'amenity', v: 'fast_food' }],
-  cafe:          [{ k: 'amenity', v: 'cafe' }],
-  cafes:         [{ k: 'amenity', v: 'cafe' }],
-  bakery:        [{ k: 'shop', v: 'bakery' }],
-  bakeries:      [{ k: 'shop', v: 'bakery' }],
-  bookshop:      [{ k: 'shop', v: 'books' }],
-  bookshops:     [{ k: 'shop', v: 'books' }],
-  dentist:       [{ k: 'amenity', v: 'dentist' }],
-  dentists:      [{ k: 'amenity', v: 'dentist' }],
-  pharmacy:      [{ k: 'amenity', v: 'pharmacy' }],
-  pharmacies:    [{ k: 'amenity', v: 'pharmacy' }],
-  gym:           [{ k: 'leisure', v: 'fitness_centre' }, { k: 'leisure', v: 'sports_centre' }],
-  gyms:          [{ k: 'leisure', v: 'fitness_centre' }, { k: 'leisure', v: 'sports_centre' }],
-  salon:         [{ k: 'shop', v: 'hairdresser' }, { k: 'shop', v: 'beauty' }],
-  salons:        [{ k: 'shop', v: 'hairdresser' }, { k: 'shop', v: 'beauty' }],
-  hotel:         [{ k: 'tourism', v: 'hotel' }],
-  hotels:        [{ k: 'tourism', v: 'hotel' }],
-  supermarket:   [{ k: 'shop', v: 'supermarket' }],
-  supermarkets:  [{ k: 'shop', v: 'supermarket' }],
-  hospital:      [{ k: 'amenity', v: 'hospital' }],
-  hospitals:     [{ k: 'amenity', v: 'hospital' }],
-  school:        [{ k: 'amenity', v: 'school' }],
-  schools:       [{ k: 'amenity', v: 'school' }],
-  bank:          [{ k: 'amenity', v: 'bank' }],
-  banks:         [{ k: 'amenity', v: 'bank' }],
-  garage:        [{ k: 'shop', v: 'car_repair' }, { k: 'amenity', v: 'fuel' }],
+  restaurant: [{ k: 'amenity', v: 'restaurant' }, { k: 'amenity', v: 'fast_food' }],
+  restaurants: [{ k: 'amenity', v: 'restaurant' }, { k: 'amenity', v: 'fast_food' }],
+  cafe: [{ k: 'amenity', v: 'cafe' }],
+  cafes: [{ k: 'amenity', v: 'cafe' }],
+  bakery: [{ k: 'shop', v: 'bakery' }],
+  bakeries: [{ k: 'shop', v: 'bakery' }],
+  bookshop: [{ k: 'shop', v: 'books' }],
+  bookshops: [{ k: 'shop', v: 'books' }],
+  dentist: [{ k: 'amenity', v: 'dentist' }],
+  dentists: [{ k: 'amenity', v: 'dentist' }],
+  pharmacy: [{ k: 'amenity', v: 'pharmacy' }],
+  pharmacies: [{ k: 'amenity', v: 'pharmacy' }],
+  gym: [{ k: 'leisure', v: 'fitness_centre' }, { k: 'leisure', v: 'sports_centre' }],
+  gyms: [{ k: 'leisure', v: 'fitness_centre' }, { k: 'leisure', v: 'sports_centre' }],
+  salon: [{ k: 'shop', v: 'hairdresser' }, { k: 'shop', v: 'beauty' }],
+  salons: [{ k: 'shop', v: 'hairdresser' }, { k: 'shop', v: 'beauty' }],
+  hotel: [{ k: 'tourism', v: 'hotel' }],
+  hotels: [{ k: 'tourism', v: 'hotel' }],
+  supermarket: [{ k: 'shop', v: 'supermarket' }],
+  supermarkets: [{ k: 'shop', v: 'supermarket' }],
+  hospital: [{ k: 'amenity', v: 'hospital' }],
+  hospitals: [{ k: 'amenity', v: 'hospital' }],
+  school: [{ k: 'amenity', v: 'school' }],
+  schools: [{ k: 'amenity', v: 'school' }],
+  bank: [{ k: 'amenity', v: 'bank' }],
+  banks: [{ k: 'amenity', v: 'bank' }],
+  garage: [{ k: 'shop', v: 'car_repair' }, { k: 'amenity', v: 'fuel' }],
   'auto repair': [{ k: 'shop', v: 'car_repair' }],
-  plumber:       [{ k: 'craft', v: 'plumber' }],
-  plumbers:      [{ k: 'craft', v: 'plumber' }],
-  contractor:    [{ k: 'craft', v: 'construction' }, { k: 'craft', v: 'carpenter' }],
+  plumber: [{ k: 'craft', v: 'plumber' }],
+  plumbers: [{ k: 'craft', v: 'plumber' }],
+  contractor: [{ k: 'craft', v: 'construction' }, { k: 'craft', v: 'carpenter' }],
 };
 
 /**
@@ -136,7 +136,11 @@ async function fetchFromOverpass(category, lat, lng) {
       'https://overpass-api.de/api/interpreter',
       `data=${encodeURIComponent(query)}`,
       {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: {
+          'User-Agent': 'WebsiteScout/1.0 (contact@yourdomain.com)',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
         timeout: 20000,
       }
     );
@@ -225,22 +229,22 @@ function generateMockPlaces(category, area) {
   ];
 
   const categoryTemplates = {
-    bookshop:     ['Book Emporium', 'Books & Stationery', 'Readers Corner', 'Page Turners', 'Book Hub', 'Academic Book Depot'],
-    bookshops:    ['Book Emporium', 'Books & Stationery', 'Readers Corner', 'Page Turners', 'Book Hub', 'Academic Book Depot'],
-    dentist:      ['Dental Care Clinic', 'Family Dental Practice', 'Smile Dental Surgery', 'Advanced Oral Healthcare', 'Dental Studio'],
-    dentists:     ['Dental Care Clinic', 'Family Dental Practice', 'Smile Dental Surgery', 'Advanced Oral Healthcare', 'Dental Studio'],
-    bakery:       ['Artisan Bakery & Cafe', 'Pastry Shop', 'Fresh Crust Bakes', 'Golden Wheat Bakery', 'Sweet Treats & Buns'],
-    bakeries:     ['Artisan Bakery & Cafe', 'Pastry Shop', 'Fresh Crust Bakes', 'Golden Wheat Bakery', 'Sweet Treats & Buns'],
-    plumber:      ['Plumbing & Drainage', 'Emergency Plumbing Pros', 'Reliable Piping Services', 'Hydro Flow Plumbers'],
-    plumbers:     ['Plumbing & Drainage', 'Emergency Plumbing Pros', 'Reliable Piping Services', 'Hydro Flow Plumbers'],
-    gym:          ['Fitness & Crossfit Gym', 'Iron Strength Health Club', 'Pulse Fitness Studio', 'Powerhouse Training Gym'],
-    gyms:         ['Fitness & Crossfit Gym', 'Iron Strength Health Club', 'Pulse Fitness Studio', 'Powerhouse Training Gym'],
-    restaurant:   ['Diner & Bistro', 'Family Restaurant & Grill', 'Spice Garden Restaurant', 'Town Tavern', 'Authentic Food House'],
-    restaurants:  ['Diner & Bistro', 'Family Restaurant & Grill', 'Spice Garden Restaurant', 'Town Tavern', 'Authentic Food House'],
-    salon:        ['Hair & Beauty Studio', 'Luxe Salon & Spa', 'Classic Barber & Grooming', 'Glow Beauty Lounge'],
-    salons:       ['Hair & Beauty Studio', 'Luxe Salon & Spa', 'Classic Barber & Grooming', 'Glow Beauty Lounge'],
-    'auto repair':['Auto Garage & Mechanics', 'Precision Motors & Repair', 'Car Diagnostics Center', 'Engine & Brake Services'],
-    contractor:   ['Building & Construction', 'Home Renovations & Builders', 'Solid Ground Contractors'],
+    bookshop: ['Book Emporium', 'Books & Stationery', 'Readers Corner', 'Page Turners', 'Book Hub', 'Academic Book Depot'],
+    bookshops: ['Book Emporium', 'Books & Stationery', 'Readers Corner', 'Page Turners', 'Book Hub', 'Academic Book Depot'],
+    dentist: ['Dental Care Clinic', 'Family Dental Practice', 'Smile Dental Surgery', 'Advanced Oral Healthcare', 'Dental Studio'],
+    dentists: ['Dental Care Clinic', 'Family Dental Practice', 'Smile Dental Surgery', 'Advanced Oral Healthcare', 'Dental Studio'],
+    bakery: ['Artisan Bakery & Cafe', 'Pastry Shop', 'Fresh Crust Bakes', 'Golden Wheat Bakery', 'Sweet Treats & Buns'],
+    bakeries: ['Artisan Bakery & Cafe', 'Pastry Shop', 'Fresh Crust Bakes', 'Golden Wheat Bakery', 'Sweet Treats & Buns'],
+    plumber: ['Plumbing & Drainage', 'Emergency Plumbing Pros', 'Reliable Piping Services', 'Hydro Flow Plumbers'],
+    plumbers: ['Plumbing & Drainage', 'Emergency Plumbing Pros', 'Reliable Piping Services', 'Hydro Flow Plumbers'],
+    gym: ['Fitness & Crossfit Gym', 'Iron Strength Health Club', 'Pulse Fitness Studio', 'Powerhouse Training Gym'],
+    gyms: ['Fitness & Crossfit Gym', 'Iron Strength Health Club', 'Pulse Fitness Studio', 'Powerhouse Training Gym'],
+    restaurant: ['Diner & Bistro', 'Family Restaurant & Grill', 'Spice Garden Restaurant', 'Town Tavern', 'Authentic Food House'],
+    restaurants: ['Diner & Bistro', 'Family Restaurant & Grill', 'Spice Garden Restaurant', 'Town Tavern', 'Authentic Food House'],
+    salon: ['Hair & Beauty Studio', 'Luxe Salon & Spa', 'Classic Barber & Grooming', 'Glow Beauty Lounge'],
+    salons: ['Hair & Beauty Studio', 'Luxe Salon & Spa', 'Classic Barber & Grooming', 'Glow Beauty Lounge'],
+    'auto repair': ['Auto Garage & Mechanics', 'Precision Motors & Repair', 'Car Diagnostics Center', 'Engine & Brake Services'],
+    contractor: ['Building & Construction', 'Home Renovations & Builders', 'Solid Ground Contractors'],
   };
 
   const templates = categoryTemplates[cleanCat] || [
@@ -327,37 +331,47 @@ async function searchPlaces({ category, area, bypassCache = false }) {
   // 3. Query Overpass API
   const elements = await fetchFromOverpass(cleanCat, geo.lat, geo.lng);
 
-  // 4. Process OSM results
+  // 4. Process OSM results — bulkWrite for atomic, high-performance DB upsert
   if (elements.length > 0) {
-    const processedLeads = [];
-    for (let i = 0; i < elements.length; i++) {
-      const biz = elementToBusiness(elements[i], cleanCat, cleanArea, i);
-      if (!biz) continue;
+    const bizList = elements
+      .map((el, i) => elementToBusiness(el, cleanCat, cleanArea, i))
+      .filter(Boolean);
 
-      const existing = await Business.findOne({ placeId: biz.placeId });
-      if (existing) {
-        Object.assign(existing, {
-          lastFetchedAt: new Date(),
-          address: biz.address || existing.address,
-          phone: biz.phone || existing.phone,
-          rating: biz.rating,
-          totalRatings: biz.totalRatings,
-          hasWebsite: biz.hasWebsite,
-          websiteUrl: biz.websiteUrl,
-        });
-        await existing.save();
-        processedLeads.push(existing);
-      } else {
-        const created = await Business.create({
-          ...biz,
-          status: 'not_contacted',
-          lastFetchedAt: new Date(),
-        });
-        processedLeads.push(created);
-      }
+    if (bizList.length > 0) {
+      const operations = bizList.map((biz) => ({
+        updateOne: {
+          filter: { placeId: biz.placeId },
+          update: {
+            $set: {
+              name: biz.name,
+              category: biz.category,
+              searchArea: biz.searchArea,
+              address: biz.address,
+              phone: biz.phone,
+              location: biz.location,
+              hasWebsite: biz.hasWebsite,
+              websiteUrl: biz.websiteUrl,
+              rating: biz.rating,
+              totalRatings: biz.totalRatings,
+              businessStatus: biz.businessStatus,
+              isSimulated: biz.isSimulated,
+              lastFetchedAt: new Date(),
+            },
+            // Only set status on insert (don't overwrite user's pipeline status)
+            $setOnInsert: { status: 'not_contacted' },
+          },
+          upsert: true,
+        },
+      }));
+
+      await Business.bulkWrite(operations, { ordered: false });
     }
 
-    console.log(`✅ Saved ${processedLeads.length} OSM businesses.`);
+    // Fetch the freshly saved docs so we return full Mongoose documents
+    const placeIds = bizList.map((b) => b.placeId);
+    const processedLeads = await Business.find({ placeId: { $in: placeIds } });
+
+    console.log(`✅ Saved ${processedLeads.length} OSM businesses via bulkWrite.`);
     return {
       source: 'openstreetmap_overpass',
       count: processedLeads.length,
@@ -366,34 +380,29 @@ async function searchPlaces({ category, area, bypassCache = false }) {
     };
   }
 
-  // 5. Simulation fallback
+  // 5. Simulation fallback — bulkWrite for fast batch upsert
   console.log(`ℹ️  No OSM results for "${cleanCat}" in "${cleanArea}". Falling back to Simulation Engine.`);
   const mockResults = generateMockPlaces(cleanCat, cleanArea);
-  const savedBusinesses = [];
 
-  for (const item of mockResults) {
-    const existing = await Business.findOne({ placeId: item.placeId });
-    if (existing) {
-      Object.assign(existing, {
-        lastFetchedAt: new Date(),
-        address: item.address || existing.address,
-        phone: item.phone || existing.phone,
-        rating: item.rating || existing.rating,
-        totalRatings: item.totalRatings || existing.totalRatings,
-        hasWebsite: item.hasWebsite,
-        websiteUrl: item.websiteUrl,
-      });
-      await existing.save();
-      savedBusinesses.push(existing);
-    } else {
-      const created = await Business.create({
-        ...item,
-        status: 'not_contacted',
-        lastFetchedAt: new Date(),
-      });
-      savedBusinesses.push(created);
-    }
-  }
+  const mockOperations = mockResults.map((item) => ({
+    updateOne: {
+      filter: { placeId: item.placeId },
+      update: {
+        $set: {
+          ...item,
+          lastFetchedAt: new Date(),
+        },
+        // Only set status on first insert — preserve user's pipeline status on update
+        $setOnInsert: { status: 'not_contacted' },
+      },
+      upsert: true,
+    },
+  }));
+
+  await Business.bulkWrite(mockOperations, { ordered: false });
+
+  const placeIds = mockResults.map((r) => r.placeId);
+  const savedBusinesses = await Business.find({ placeId: { $in: placeIds } });
 
   return {
     source: 'simulation',
