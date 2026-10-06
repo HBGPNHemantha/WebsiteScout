@@ -4,65 +4,63 @@ const axios = require('axios');
 
 /**
  * @route   GET /api/settings/status
- * @desc    Get API key status and server configuration
+ * @desc    Get engine status — now using OpenStreetMap (no API key required)
  */
-router.get('/status', (req, res) => {
-  const hasServerKey = Boolean(
-    process.env.GOOGLE_MAPS_SERVER_API_KEY &&
-    process.env.GOOGLE_MAPS_SERVER_API_KEY.trim() !== '' &&
-    process.env.GOOGLE_MAPS_SERVER_API_KEY !== 'your_google_maps_server_api_key_here'
-  );
-
-  const hasBrowserKey = Boolean(
-    process.env.GOOGLE_MAPS_BROWSER_API_KEY &&
-    process.env.GOOGLE_MAPS_BROWSER_API_KEY.trim() !== '' &&
-    process.env.GOOGLE_MAPS_BROWSER_API_KEY !== 'your_google_maps_browser_api_key_here'
-  );
+router.get('/status', async (req, res) => {
+  // Test Nominatim reachability quickly
+  let osmReachable = false;
+  try {
+    const resp = await axios.get('https://nominatim.openstreetmap.org/search', {
+      params: { q: 'London', format: 'json', limit: 1 },
+      headers: { 'User-Agent': 'WebsiteScout/1.0 (status-check)' },
+      timeout: 4000,
+    });
+    osmReachable = Array.isArray(resp.data) && resp.data.length > 0;
+  } catch (_) {
+    osmReachable = false;
+  }
 
   res.json({
     success: true,
     data: {
-      hasServerKey,
-      hasBrowserKey,
-      browserKey: hasBrowserKey ? process.env.GOOGLE_MAPS_BROWSER_API_KEY : '',
-      mode: hasServerKey ? 'Live Google Places API' : 'Places Simulation Engine (Instant Ready)',
-      useMockFallback: process.env.USE_MOCK_FALLBACK === 'true' || !process.env.USE_MOCK_FALLBACK
-    }
+      // Legacy fields kept for frontend compatibility
+      hasServerKey: true,   // OSM is always "available" — no key needed
+      hasBrowserKey: false,
+      browserKey: '',
+      mode: osmReachable
+        ? 'Live OpenStreetMap (Nominatim + Overpass API)'
+        : 'Places Simulation Engine (OSM unreachable)',
+      osmReachable,
+      useMockFallback: !osmReachable,
+      provider: 'openstreetmap',
+    },
   });
 });
 
 /**
  * @route   POST /api/settings/test-key
- * @desc    Test Google Places API Key validity
+ * @desc    Test Nominatim / Overpass connectivity (no key needed — just connectivity check)
  */
 router.post('/test-key', async (req, res) => {
+  // Since we use OSM, we simply verify Nominatim is reachable
   try {
-    const { apiKey } = req.body;
-    if (!apiKey) {
-      return res.status(400).json({ success: false, error: 'Please provide an API key to test.' });
-    }
-
-    const testUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
-    const resp = await axios.get(testUrl, {
-      params: {
-        query: 'cafe in London',
-        key: apiKey
-      },
-      timeout: 5000
+    const resp = await axios.get('https://nominatim.openstreetmap.org/search', {
+      params: { q: 'cafe in London', format: 'json', limit: 1 },
+      headers: { 'User-Agent': 'WebsiteScout/1.0 (connectivity-test)' },
+      timeout: 6000,
     });
 
-    if (resp.data.status === 'OK' || resp.data.status === 'ZERO_RESULTS') {
-      return res.json({ success: true, message: 'Google Places API Key is valid and functional!' });
-    } else {
-      return res.status(400).json({
-        success: false,
-        error: `Google API responded with status: ${resp.data.status}. ${resp.data.error_message || ''}`
+    if (Array.isArray(resp.data) && resp.data.length >= 0) {
+      return res.json({
+        success: true,
+        message: 'OpenStreetMap (Nominatim) is reachable! No API key required — you are ready to scout.',
       });
     }
+    return res.status(400).json({ success: false, error: 'Nominatim returned an unexpected response.' });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: `Connection to Google Places API failed: ${err.message}`
+      error: `Cannot reach OpenStreetMap Nominatim: ${err.message}`,
     });
   }
 });

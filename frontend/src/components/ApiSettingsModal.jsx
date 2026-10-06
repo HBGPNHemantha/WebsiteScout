@@ -15,7 +15,6 @@ import { testGoogleApiKey } from '../services/api';
 
 export default function ApiSettingsModal() {
   const { isSettingsOpen, setIsSettingsOpen, apiConfig, refreshApiConfig, showToast } = useLeads();
-  const [testKeyInput, setTestKeyInput] = useState('');
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
@@ -23,18 +22,18 @@ export default function ApiSettingsModal() {
 
   const handleTestKey = async (e) => {
     e.preventDefault();
-    if (!testKeyInput.trim()) return;
     setTesting(true);
     setTestResult(null);
 
     try {
-      const res = await testGoogleApiKey(testKeyInput.trim());
+      // Pass empty string — backend now checks OSM connectivity, not a Google key
+      const res = await testGoogleApiKey('');
       setTestResult({ success: true, message: res.data.message });
-      showToast('API Key verified successfully!', 'success');
+      showToast('OSM connection verified!', 'success');
       refreshApiConfig();
     } catch (err) {
       setTestResult({ success: false, message: err.message });
-      showToast('Key test failed: ' + err.message, 'error');
+      showToast('OSM connection test failed: ' + err.message, 'error');
     } finally {
       setTesting(false);
     }
@@ -51,8 +50,8 @@ export default function ApiSettingsModal() {
               <Settings className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">API & Engine Settings</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Google Places API Keys & Data Engines</p>
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100">Data Engine Settings</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">OpenStreetMap — No API Key Required</p>
             </div>
           </div>
 
@@ -73,48 +72,41 @@ export default function ApiSettingsModal() {
               Active Scout Engine
             </span>
             <div className="flex items-center space-x-3">
-              <div className={`w-3 h-3 rounded-full ${apiConfig?.hasServerKey ? 'bg-emerald-500 animate-pulse' : 'bg-indigo-500'}`} />
+              <div className={`w-3 h-3 rounded-full ${apiConfig?.osmReachable === false ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'}`} />
               <div>
                 <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                  {apiConfig?.hasServerKey ? 'Live Google Places API' : 'Places Simulation Engine'}
+                  {apiConfig?.osmReachable === false
+                    ? 'Places Simulation Engine (OSM offline)'
+                    : 'Live OpenStreetMap — Nominatim + Overpass'}
                 </p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">
-                  {apiConfig?.hasServerKey
-                    ? 'Connected directly to Google Cloud Places API (Text Search & Details proxy).'
-                    : 'Instant preview mode active! Simulates real local businesses and "no website" leads with geo-accurate coordinates for any city in the world.'}
+                  {apiConfig?.osmReachable === false
+                    ? 'OSM is currently unreachable. Using simulation engine with geo-accurate coordinates.'
+                    : 'Connected to OpenStreetMap. Fetching real business data from Overpass API — no API key needed.'}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Test Google Places Key */}
+          {/* OSM Connectivity Test */}
           <form onSubmit={handleTestKey} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-3">
             <div className="flex items-center space-x-2">
-              <Key className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <Key className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                Test Google Places API Key
+                Test OpenStreetMap Connectivity
               </h3>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400">
-              Paste an API key to test live connectivity against the Google Places endpoint.
+              No API key is needed. Click the button below to verify that the Nominatim geocoding service is reachable from your server.
             </p>
 
-            <div className="flex gap-2">
-              <input
-                type="password"
-                value={testKeyInput}
-                onChange={(e) => setTestKeyInput(e.target.value)}
-                placeholder="AIzaSy..."
-                className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
-              />
-              <button
-                type="submit"
-                disabled={testing || !testKeyInput.trim()}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow transition flex items-center space-x-1.5"
-              >
-                {testing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <span>Test Key</span>}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={testing}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow transition flex items-center space-x-1.5"
+            >
+              {testing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <span>Test OSM Connection</span>}
+            </button>
 
             {testResult && (
               <div
@@ -134,32 +126,40 @@ export default function ApiSettingsModal() {
             )}
           </form>
 
-          {/* Configuration Instructions */}
+          {/* How It Works */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
-              <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>How to add your permanent API keys</span>
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>How the data engine works</span>
             </h3>
 
             <div className="text-xs text-slate-600 dark:text-slate-400 space-y-2 leading-relaxed bg-slate-50 dark:bg-slate-950/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
               <p>
-                1. Open <code className="text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-900 px-1 py-0.5 rounded border border-indigo-100 dark:border-slate-800">backend/.env</code> file.
+                🗺️ <strong>Geocoding</strong> — Area names are resolved to coordinates using{' '}
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Nominatim</span> (OpenStreetMap).
               </p>
               <p>
-                2. Set <code className="text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-900 px-1 py-0.5 rounded border border-indigo-100 dark:border-slate-800">GOOGLE_MAPS_SERVER_API_KEY=AIzaSy...</code>
+                📡 <strong>Business Search</strong> — Real businesses are fetched from the{' '}
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Overpass API</span> using OSM tags.
               </p>
               <p>
-                3. Ensure <strong>Places API</strong> and <strong>Maps JavaScript API</strong> are enabled in your Google Cloud Console.
+                🗄️ <strong>Caching</strong> — Results are cached in MongoDB for 30 days for instant repeat searches.
+              </p>
+              <p>
+                🔁 <strong>Fallback</strong> — If OSM has sparse data for an area, the Simulation Engine activates automatically.
+              </p>
+              <p className="pt-1 text-emerald-700 dark:text-emerald-400 font-semibold">
+                ✅ Zero API keys. Zero cost. No credit card.
               </p>
             </div>
 
             <a
-              href="https://console.cloud.google.com/google/maps-apis/overview"
+              href="https://www.openstreetmap.org"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center space-x-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
+              className="inline-flex items-center space-x-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300"
             >
-              <span>Open Google Cloud Console</span>
+              <span>OpenStreetMap.org</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>

@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { searchPlaces } = require('../services/googlePlaces');
+const { searchPlaces } = require('../services/osmPlaces');
 const SearchHistory = require('../models/SearchHistory');
 const { optionalAuth } = require('../middleware/auth');
 
 /**
  * @route   POST /api/search
- * @desc    Search businesses by category & location via Google Places, filter by website presence, and save to DB
+ * @desc    Search businesses by category & location via OpenStreetMap (Nominatim + Overpass), filter by website presence, and save to DB
  * @access  Public / Optional Auth
  */
 router.post('/', optionalAuth, async (req, res) => {
   try {
-    const { category, area, bypassCache, apiKey } = req.body;
+    const { category, area, bypassCache } = req.body;
 
     if (!category || !area) {
       return res.status(400).json({
@@ -24,7 +24,6 @@ router.post('/', optionalAuth, async (req, res) => {
       category,
       area,
       bypassCache: Boolean(bypassCache),
-      apiKey
     });
 
     // Record in search history
